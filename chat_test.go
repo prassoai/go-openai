@@ -377,7 +377,7 @@ func handleChatCompletionEndpoint(w http.ResponseWriter, r *http.Request) {
 			}
 
 			res.Choices = append(res.Choices, openai.ChatCompletionChoice{
-				Message: openai.ChatCompletionMessage{
+				Message: openai.ChatCompletionChoiceMessage{
 					Role: openai.ChatMessageRoleFunction,
 					// this is valid json so it should be fine
 					FunctionCall: &openai.FunctionCall{
@@ -393,14 +393,9 @@ func handleChatCompletionEndpoint(w http.ResponseWriter, r *http.Request) {
 		completionStr := strings.Repeat("a", completionReq.MaxTokens)
 
 		res.Choices = append(res.Choices, openai.ChatCompletionChoice{
-			Message: openai.ChatCompletionMessage{
-				Role: openai.ChatMessageRoleAssistant,
-				Content: []openai.ChatMessageContent{
-					{
-						Type: openai.ChatMessageContentTypeText,
-						Text: completionStr,
-					},
-				},
+			Message: openai.ChatCompletionChoiceMessage{
+				Role:    openai.ChatMessageRoleAssistant,
+				Content: completionStr,
 			},
 			Index: i,
 		})
